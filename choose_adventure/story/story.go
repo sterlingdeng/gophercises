@@ -3,7 +3,7 @@ package story
 import (
 	"encoding/json"
 	"errors"
-	"io/ioutil"
+	"os"
 )
 
 var NoIntroError = errors.New("intro not found")
@@ -32,12 +32,14 @@ func NewStory(filepath string) (Story, error) {
 }
 
 func (s *Story) ParseJSON(filepath string) (error) {
-	bytes, err := ioutil.ReadFile(filepath)
+	file, err := os.Open(filepath)
 	if err != nil {
 		return err
 	}
 	storyArcs := make(map[string]Arc)
-	err = json.Unmarshal(bytes, &storyArcs)
+	// use json.NewDecoder because file implements io reader.
+	d := json.NewDecoder(file)
+	err = d.Decode(&storyArcs)
 	if err != nil {
 		return err
 	}
