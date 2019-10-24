@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
 	"log"
 	"os"
@@ -23,7 +22,6 @@ func init() {
 	if err != nil {
 		log.Fatalf("failed to initialize db. %v", err)
 	}
-	_ = fmt.Sprint(store)
 }
 
 func Execute() {
